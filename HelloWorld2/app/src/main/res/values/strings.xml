@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Hello World</string>
+    <string name="my_text">Hello Ames!</string>
+    <string name="button_text">Change It!</string>
+    <string name="hello_isu">Hello ISU!</string>
+</resources>
