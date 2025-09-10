@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
            the instance of the calculator display's TextView.  You need to create this TextView
            and set its ID to CalculatorDisplay in your layout resource file.
          */
-        //mCalculatorDisplay = findViewById(R.id.CalculatorDisplay);
+        mCalculatorDisplay = findViewById(R.id.CalculatorDisplay);
     }
 
     /* TODO - add event listeners for your calculator's buttons. See the model's API to figure out
