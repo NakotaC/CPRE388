@@ -14,7 +14,10 @@ public class CalculationStream {
         ADD,
         SUBTRACT,
         MULTIPLY,
-        DIVIDE
+        DIVIDE,
+        EXPONENT,
+        SQRT,
+        MOD
     }
 
     /**
@@ -115,7 +118,7 @@ public class CalculationStream {
      */
     public void inputOperation(Operation operation) {
         if(mExpression1.length() == 0) {
-            mCurrentOperation = operation.NONE;
+            mCurrentOperation = Operation.NONE;
             return;
         }
         if(mCurrentOperation != Operation.NONE) {
@@ -130,11 +133,14 @@ public class CalculationStream {
      */
     public void calculateResult() throws NumberFormatException {
         try {
-            if(mExpression1.length() == 0 || mExpression2.length() == 0) {
+            if(mExpression1.length() == 0 || mExpression2.length() == 0 && mCurrentOperation != Operation.SQRT) {
                 return;
             }
             double op1 = Double.parseDouble(mExpression1.toString());
-            double op2 = Double.parseDouble(mExpression2.toString());
+            double op2= 0;
+            if(mCurrentOperation != Operation.SQRT) {
+                op2  = Double.parseDouble(mExpression2.toString());
+            }
             double result = 0.0;
             switch(mCurrentOperation) {
                 case ADD:
@@ -148,6 +154,15 @@ public class CalculationStream {
                     break;
                 case DIVIDE:
                     result = op1 / op2;
+                    break;
+                case EXPONENT:
+                    result = Math.pow(op1, op2);
+                    break;
+                case SQRT:
+                    result = Math.sqrt(op1);
+                    break;
+                case MOD:
+                    result = op1 % op2;
                     break;
                 case NONE:
                 default:

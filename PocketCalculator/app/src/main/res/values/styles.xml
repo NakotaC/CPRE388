@@ -9,13 +9,14 @@
     </style>
 
     <style name="MyButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">#D81B60</item>
+        <item name="android:background">#6AE91E63</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">24sp</item>
         <item name="android:padding">10dp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">90dp</item>
-        <item name="android:layout_height">90dp</item>
+        <item name="android:layout_width">85dp</item>
+        <item name="android:layout_height">85dp</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
 </resources>
