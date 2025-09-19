@@ -20,16 +20,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(StopwatchViewModel.class);
-
-        // TODO: Initialize UI components (TextView, Buttons)
 
         Button btnReset = findViewById(R.id.btnReset);
         btnStartStop = findViewById(R.id.btnStartStop);
         tvTime = findViewById(R.id.TvTime);
-
-        // TODO: Set up button listeners for Start/Stop and Reset
 
         btnStartStop.setOnClickListener(v -> {
                     if (viewModel.isRunning()) {
@@ -47,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
             btnStartStop.setText(R.string.Start);
             tvTime.setText(R.string.Reset_Time);
         });
-
 
         viewModel.getElapsedTime().observe(this, elapsedTime -> {
             long seconds = elapsedTime / 1000;

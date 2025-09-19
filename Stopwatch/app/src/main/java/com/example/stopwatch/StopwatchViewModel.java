@@ -67,7 +67,6 @@ public class  StopwatchViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        // Prevent memory leaks by removing callbacks
         timerHandler.removeCallbacks(timerRunnable);
     }
 }
