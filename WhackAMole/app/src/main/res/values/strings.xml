@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Whack A Mole</string>
     <string name="Start">Start Game</string>
-    <string name="Highscore">High score:</string>
+    <string name="Highscore">High Scores:</string>
+    <string name="no_high_scores">No high scores yet</string>
+    <string name="back_button">Back Button</string>
+
 </resources>
