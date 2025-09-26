@@ -10,8 +10,8 @@
     <ImageButton
         android:id="@+id/gameBackBtn"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="116dp"
-        android:layout_height="104dp"
+        android:layout_width="99dp"
+        android:layout_height="95dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/back_button"
@@ -19,5 +19,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
+
+    <TableLayout
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="164dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageButton
+                android:id="@+id/mole1"
+                style="@style/MoleButtonStyle" />
+
+            <ImageButton
+                android:id="@+id/mole2"
+                style="@style/MoleButtonStyle"/>
+            <ImageButton
+                android:id="@+id/mole3"
+                style="@style/MoleButtonStyle"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        <ImageButton
+            android:id="@+id/mole4"
+            style="@style/MoleButtonStyle"/>
+        <ImageButton
+            android:id="@+id/mole5"
+            style="@style/MoleButtonStyle"/>
+        <ImageButton
+            android:id="@+id/mole6"
+            style="@style/MoleButtonStyle"/>
+    </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <ImageButton
+                android:id="@+id/mole7"
+                style="@style/MoleButtonStyle"/>
+            <ImageButton
+                android:id="@+id/mole8"
+                style="@style/MoleButtonStyle"/>
+            <ImageButton
+                android:id="@+id/mole9"
+                style="@style/MoleButtonStyle"/>
+        </TableRow>
+
+
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

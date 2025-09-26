@@ -4,5 +4,6 @@
     <string name="Highscore">High Scores:</string>
     <string name="no_high_scores">No high scores yet</string>
     <string name="back_button">Back Button</string>
+    <string name="mole">Mole</string>
 
 </resources>

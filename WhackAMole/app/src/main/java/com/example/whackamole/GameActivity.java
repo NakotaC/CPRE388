@@ -26,7 +26,10 @@ public class GameActivity extends AppCompatActivity {
         });
 
         GameModel gameModel = new ViewModelProvider(this).get(GameModel.class);
-
+        MoleModel[] moleModels = gameModel.getMoleModel();
+        for (int i = 0; i < moleModels.length; i++) {
+            ImageButton mole = findViewById(R.id.mole + i);
+        }
         ImageButton backBtn = findViewById(R.id.gameBackBtn);
         backBtn.setOnClickListener(v -> {
             saveHighScores(this, gameModel.getScore().getValue());
@@ -34,4 +37,10 @@ public class GameActivity extends AppCompatActivity {
         });
 
     }
+
+    private void activateMoleView(GameModel gameModel, int index) {
+
+
+    }
+
 }
