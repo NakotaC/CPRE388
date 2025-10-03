@@ -28,6 +28,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton mole7;
     private ImageButton mole8;
     private ImageButton mole9;
+    private SoundManager soundManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class GameActivity extends AppCompatActivity {
         xImage1.setVisibility(View.INVISIBLE);
         xImage2.setVisibility(View.INVISIBLE);
         xImage3.setVisibility(View.INVISIBLE);
+
+        soundManager = new SoundManager(this);
 
         gameModel.init();
 
@@ -158,6 +161,7 @@ public class GameActivity extends AppCompatActivity {
                 break;
         }
         gameModel.getMoleModel()[i].cancelExpirationTimer();
+        soundManager.playDeactivateSound();
     }
 
     private void activateMoleView(GameModel gameModel, int index) {
@@ -191,7 +195,7 @@ public class GameActivity extends AppCompatActivity {
                 break;
         }
         gameModel.getMoleModel()[index].startExpirationTimer(2000);
-
+        soundManager.playActivateSound();
     }
 
 

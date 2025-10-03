@@ -17,9 +17,9 @@
     </style>
 
     <style name="MoleButtonStyle" parent="Widget.AppCompat.ImageButton">
-        <item name="android:src">@drawable/mole</item>  <!-- 1. Set your mole drawable -->
-        <item name="android:scaleType">fitCenter</item>          <!-- 2. Scale image to fit, centered -->
-        <item name="android:background">@android:color/transparent</item> <!-- 3. Borderless - transparent background -->
+        <item name="android:src">@drawable/mole</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:padding">0dp</item>
         <item name="android:layout_width">130dp</item>
         <item name="android:onClick">onMoleClicked"</item>
@@ -28,9 +28,9 @@
     </style>
 
     <style name="RedXStyle" parent="Widget.AppCompat.ImageButton">
-        <item name="android:src">@drawable/red_x</item>  <!-- 1. Set your mole drawable -->
-        <item name="android:scaleType">fitCenter</item>          <!-- 2. Scale image to fit, centered -->
-        <item name="android:background">@android:color/transparent</item> <!-- 3. Borderless - transparent background -->
+        <item name="android:src">@drawable/red_x</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:padding">10dp</item>
         <item name="android:layout_width">70dp</item>
         <item name="android:layout_height">70dp</item>
