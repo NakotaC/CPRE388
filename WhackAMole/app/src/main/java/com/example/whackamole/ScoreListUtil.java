@@ -24,8 +24,15 @@ public class ScoreListUtil {
         scoreList.sort(Collections.reverseOrder());
         try {
             fos = context.openFileOutput(HIGHSCORES_FILENAME, Context.MODE_PRIVATE);
-            for (int i = 0 ; i < 5; i++){
-                fos.write((score + "\n").getBytes());
+
+            // Determine how many scores to write (up to 5 or the list size if smaller).
+            int scoresToWrite = Math.min(scoreList.size(), 5);
+
+            // Loop through the sorted list and write each score.
+            for (int i = 0; i < scoresToWrite; i++) {
+                // Get the score from the list at the current index.
+                Integer scoreFromList = scoreList.get(i);
+                fos.write((scoreFromList.toString() + "\n").getBytes());
             }
         } catch (Exception e) {
             Log.e("ScoreListUtil", "Error saving high scores", e);

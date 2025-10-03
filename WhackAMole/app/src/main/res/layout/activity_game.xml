@@ -3,15 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/Theme.WhackAMole"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".GameActivity">
 
     <ImageButton
         android:id="@+id/gameBackBtn"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="99dp"
-        android:layout_height="95dp"
+        android:layout_width="77dp"
+        android:layout_height="68dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/back_button"
@@ -21,59 +23,141 @@
         app:srcCompat="@drawable/arrow" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="144dp"
+        android:background="@drawable/background"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/mole1"
+                android:contentDescription="@string/mole"
+                android:onClick="onMoleClicked"
                 style="@style/MoleButtonStyle" />
 
             <ImageButton
                 android:id="@+id/mole2"
-                style="@style/MoleButtonStyle"/>
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
+
             <ImageButton
                 android:id="@+id/mole3"
-                style="@style/MoleButtonStyle"/>
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        <ImageButton
-            android:id="@+id/mole4"
-            style="@style/MoleButtonStyle"/>
-        <ImageButton
-            android:id="@+id/mole5"
-            style="@style/MoleButtonStyle"/>
-        <ImageButton
-            android:id="@+id/mole6"
-            style="@style/MoleButtonStyle"/>
-    </TableRow>
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/mole4"
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
+
+            <ImageButton
+                android:id="@+id/mole5"
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
+
+            <ImageButton
+                android:id="@+id/mole6"
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
             <ImageButton
                 android:id="@+id/mole7"
-                style="@style/MoleButtonStyle"/>
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
+
             <ImageButton
                 android:id="@+id/mole8"
-                style="@style/MoleButtonStyle"/>
+                style="@style/MoleButtonStyle"
+                android:contentDescription="@string/mole" />
+
             <ImageButton
                 android:id="@+id/mole9"
-                style="@style/MoleButtonStyle"/>
+                android:contentDescription="@string/mole"
+                style="@style/MoleButtonStyle" />
         </TableRow>
 
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/Start"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <FrameLayout
+        android:layout_width="245dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintStart_toEndOf="@+id/gameBackBtn">
+
+        <TextView
+            android:id="@+id/gameScoreTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/score"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/gameOverTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/game_over"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            android:translationY="50dp" />
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationY="50dp">
+
+            <ImageView
+                android:id="@+id/xImage1"
+                style="@style/RedXStyle"
+                android:contentDescription="@string/red_x" />
+
+            <ImageView
+                android:id="@+id/xImage2"
+                style="@style/RedXStyle"
+                android:contentDescription="@string/red_x" />
+
+            <ImageView
+                android:id="@+id/xImage3"
+                style="@style/RedXStyle"
+                android:contentDescription="@string/red_x" />
+        </TableRow>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

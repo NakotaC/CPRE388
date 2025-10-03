@@ -11,13 +11,13 @@
 
 
     <Button
-        android:id="@+id/startBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginBottom="96dp"
+        android:id="@+id/playBtn"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="80dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="@string/Start"
+        android:text="@string/play_game"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

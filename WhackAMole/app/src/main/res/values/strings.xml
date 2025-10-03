@@ -5,5 +5,9 @@
     <string name="no_high_scores">No high scores yet</string>
     <string name="back_button">Back Button</string>
     <string name="mole">Mole</string>
+    <string name="play_game">Play Game</string>
+    <string name="game_over">Game Over!</string>
+    <string name="red_x">Red X</string>
+    <string name="score">Score:</string>
 
 </resources>
