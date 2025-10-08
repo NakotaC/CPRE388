@@ -13,6 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
 
+/**
+ * This class represents the Main Activity for the Whack A mole game.
+ */
 public class MainActivity extends AppCompatActivity {
 
 

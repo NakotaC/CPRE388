@@ -16,6 +16,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+/**
+ * This class represents the Game Activity for the Whack A mole game.
+ * It handles the UI and logic for the game, using the GameModel.
+ */
 public class GameActivity extends AppCompatActivity {
     private GameModel gameModel;
     private int missedMoles = 0;
@@ -199,7 +203,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * OnClick handler for all of the mole buttons.
+     * @param view The view that was clicked.
+     */
     public void onMoleClicked(View view) {
         ImageButton clickedMole = (ImageButton) view;
         int clickedID = clickedMole.getId();

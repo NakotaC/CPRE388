@@ -1,5 +1,6 @@
 package com.example.whackamole;
 
+import android.os.BatteryManager;
 import android.os.Looper;
 import android.util.Log;
 import android.os.Handler;
@@ -10,6 +11,9 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.Random;
 
+/**
+ * This class represents the Game Model for the Whack A mole game.
+ */
 public class GameModel extends ViewModel {
     private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> gameOver = new MutableLiveData<>(false);
@@ -21,13 +25,21 @@ public class GameModel extends ViewModel {
     private final Handler difficultyHandler = new Handler(Looper.getMainLooper());
     private final Handler moleHandler = new Handler(Looper.getMainLooper());
     private final Random random = new Random();
-public void init() {
+
+    /**
+     * Initializes the GameModel.
+     */
+    public void init() {
         for (int i = 0; i < moleModel.length; i++) {
             moleModel[i] = new MoleModel();
         }
     score.setValue(0);
     gameOver.setValue(false);
 }
+
+    /**
+     * Starts the game and initializes the difficulty and mole timers.
+     */
     public void startGame() {
         gameStarted.setValue(true);
         score.setValue(0);
@@ -36,6 +48,9 @@ public void init() {
         moleHandler.postDelayed(moleRunnable, moleInterval);
     }
 
+    /**
+     * Runnable for the difficultyHandler to increase the difficulty.
+     */
     private final Runnable difficultyRunnable = new Runnable() {
         @Override
         public void run() {
@@ -46,6 +61,9 @@ public void init() {
             }
         };
 
+    /**
+     * Runnable for the moleHandler to activate a random mole.
+     */
     private final Runnable moleRunnable = new Runnable() {
         @Override
         public void run() {
@@ -66,6 +84,9 @@ public void init() {
         }
     };
 
+    /**
+     * Ends the game and cancels the difficulty and mole timers.
+     */
     public void endGame() {
         // Stop all timers to prevent more moles from appearing
         difficultyHandler.removeCallbacks(difficultyRunnable);
@@ -76,25 +97,45 @@ public void init() {
         gameStarted.postValue(false); // Also update the gameStarted state
     }
 
-public LiveData<Integer> getScore() {
+    /**
+     * Gets the score LiveData.
+     * @return A LiveData that represents the score.
+     */
+    public LiveData<Integer> getScore() {
             return score;
 }
 
-public LiveData<Boolean> getGameOver() {
+    /**
+     * Gets the gameOver LiveData.
+     * @return A LiveData that represents the game over state.
+     */
+    public LiveData<Boolean> getGameOver() {
         return gameOver;
 }
 
+/**
+ * Gets the gameStarted LiveData.
+ * @return A LiveData that represents the game started state.
+ */
 public LiveData<Boolean> getGameStarted() {
         return gameStarted;
 }
 
-public void incrementScore() {
+    /**
+     * Increments the score by 1.
+     */
+    public void incrementScore() {
         if (score.getValue() == null) {
             score.setValue(0);
         }
         score.setValue(score.getValue() + 1);
 }
-public MoleModel[] getMoleModel() {
+
+    /**
+     * Gets the moleModel array.
+     * @return An array of MoleModel objects.
+     */
+    public MoleModel[] getMoleModel() {
         return moleModel;
 }
     @Override
@@ -104,4 +145,6 @@ public MoleModel[] getMoleModel() {
         moleHandler.removeCallbacks(moleRunnable);
     }
 
+    BatteryManager batteryManager;
 }
+

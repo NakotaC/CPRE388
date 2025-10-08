@@ -19,6 +19,19 @@ public class MoleModel extends ViewModel {
         isExpired.setValue(true);
     };
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        cancelExpirationTimer();
+    }
+
+    /**
+     * Constructor for MoleModel.
+     */
+    public MoleModel() {
+        isActive.setValue(false);
+        isExpired.setValue(false);
+    }
     /**
      * Starts the expiration timer for this mole.
      * When the timer finishes, the mole will deactivate itself.
@@ -39,25 +52,19 @@ public class MoleModel extends ViewModel {
         expirationHandler.removeCallbacks(expirationRunnable);
     }
 
-    public MoleModel() {
-        isActive.setValue(false);
-        isExpired.setValue(false);
-    }
-
+    /**
+     * Gets or sets the active state of this mole.
+     * @return A MutableLiveData that represents the active state.
+     */
     public MutableLiveData<Boolean> getIsActive() {
         return isActive;
     }
 
-    // Add a getter for isExpired if you need to observe it elsewhere
+    /**
+     * Gets or sets the expiration state of this mole.
+     * @return A MutableLiveData that represents the expiration state.
+     */
     public MutableLiveData<Boolean> getIsExpired() {
         return isExpired;
-    }
-
-    // It's good practice to also clean up in onCleared, though the Handler uses the main looper
-    // which lives for the app's lifetime. Removing callbacks is the most critical part.
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        cancelExpirationTimer();
     }
 }

@@ -11,12 +11,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class implements methods for saving and loading high scores.
+ */
 public class ScoreListUtil {
 
     private static final String HIGHSCORES_FILENAME = "highscores.txt";
     private static List<Integer> scoreList = new ArrayList<>();
 
-
+    /**
+     * Saves the high scores to a file. Only saves the 5 highest scores.
+     * @param context The context of the activity.
+     * @param score The score to save.
+     */
     public static void saveHighScores(Context context, Integer score) {
         FileOutputStream fos = null;
 
@@ -48,6 +55,11 @@ public class ScoreListUtil {
         }
     }
 
+    /**
+     * Loads the high scores from a file.
+     * @param context The context of the activity.
+     * @return A list of the high scores.
+     */
     public static List<Integer> loadHighScores(Context context) {
         FileInputStream fis = null;
         List<Integer> scores = null;
