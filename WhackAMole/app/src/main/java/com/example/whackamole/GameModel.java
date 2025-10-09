@@ -19,8 +19,8 @@ public class GameModel extends ViewModel {
     private final MutableLiveData<Boolean> gameOver = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> gameStarted = new MutableLiveData<>(false);
     private final MoleModel[] moleModel = new MoleModel[9];
-    private  int moleInterval = 1000;
-    private final int difficultyInterval = 5000;
+    private  int moleInterval = 800;
+    private final int difficultyInterval = 3000;
     private double difficulty = 1;
     private final Handler difficultyHandler = new Handler(Looper.getMainLooper());
     private final Handler moleHandler = new Handler(Looper.getMainLooper());
@@ -55,7 +55,7 @@ public class GameModel extends ViewModel {
         @Override
         public void run() {
                 difficulty += 0.2;
-                moleInterval = (moleInterval - 100);
+                moleInterval = (moleInterval - 80);
                 Log.d("GameModel", "increaseDifficulty" + difficulty);
                 difficultyHandler.postDelayed(this, difficultyInterval);
             }
@@ -145,6 +145,5 @@ public LiveData<Boolean> getGameStarted() {
         moleHandler.removeCallbacks(moleRunnable);
     }
 
-    BatteryManager batteryManager;
 }
 

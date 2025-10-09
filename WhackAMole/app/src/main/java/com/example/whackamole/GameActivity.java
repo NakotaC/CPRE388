@@ -198,7 +198,7 @@ public class GameActivity extends AppCompatActivity {
                 mole9.setVisibility(View.VISIBLE);
                 break;
         }
-        gameModel.getMoleModel()[index].startExpirationTimer(2000);
+        gameModel.getMoleModel()[index].startExpirationTimer(1500);
         soundManager.playActivateSound();
     }
 
