@@ -80,6 +80,7 @@ public class GameActivity extends AppCompatActivity {
             gameModel.getMoleModel()[i].getIsExpired().observe(this, isExpired -> {
                 if (isExpired) {
                     deactivateMoleView(gameModel, finalI);
+                    soundManager.playMissedMoleSound();
                     missedMoles++;
                     if (missedMoles == 1) {
                         xImage1.setVisibility(View.VISIBLE);
@@ -102,6 +103,7 @@ public class GameActivity extends AppCompatActivity {
         ImageButton backBtn = findViewById(R.id.gameBackBtn);
         backBtn.setOnClickListener(v -> {
             saveHighScores(this, gameModel.getScore().getValue());
+            soundManager.release();
             finish();
         });
 
@@ -165,7 +167,7 @@ public class GameActivity extends AppCompatActivity {
                 break;
         }
         gameModel.getMoleModel()[i].cancelExpirationTimer();
-        soundManager.playDeactivateSound();
+
     }
 
     private void activateMoleView(GameModel gameModel, int index) {
@@ -198,7 +200,8 @@ public class GameActivity extends AppCompatActivity {
                 mole9.setVisibility(View.VISIBLE);
                 break;
         }
-        gameModel.getMoleModel()[index].startExpirationTimer(1500);
+        int moleTimer = Math.max(350, 900 - (50 * gameModel.getDifficulty().getValue()));
+        gameModel.getMoleModel()[index].startExpirationTimer((900 / gameModel.getDifficulty().getValue()));
         soundManager.playActivateSound();
     }
 
@@ -235,6 +238,7 @@ public class GameActivity extends AppCompatActivity {
         if (Boolean.TRUE.equals(gameModel.getMoleModel()[clickedIndex].getIsActive().getValue())) {
             gameModel.incrementScore();
             gameModel.getMoleModel()[clickedIndex].getIsActive().setValue(false);
+            soundManager.playTapMoleSound();
             deactivateMoleView(gameModel, clickedIndex);
         }
 

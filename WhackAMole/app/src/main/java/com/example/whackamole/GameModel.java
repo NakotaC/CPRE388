@@ -18,10 +18,10 @@ public class GameModel extends ViewModel {
     private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> gameOver = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> gameStarted = new MutableLiveData<>(false);
+    private final MutableLiveData<Integer> difficulty = new MutableLiveData<>(1);
     private final MoleModel[] moleModel = new MoleModel[9];
     private  int moleInterval = 800;
-    private final int difficultyInterval = 3000;
-    private double difficulty = 1;
+    private final int difficultyInterval = 4000;
     private final Handler difficultyHandler = new Handler(Looper.getMainLooper());
     private final Handler moleHandler = new Handler(Looper.getMainLooper());
     private final Random random = new Random();
@@ -43,6 +43,7 @@ public class GameModel extends ViewModel {
     public void startGame() {
         gameStarted.setValue(true);
         score.setValue(0);
+        difficulty.setValue(1);
         gameOver.setValue(false);
         difficultyHandler.postDelayed(difficultyRunnable, difficultyInterval);
         moleHandler.postDelayed(moleRunnable, moleInterval);
@@ -54,9 +55,15 @@ public class GameModel extends ViewModel {
     private final Runnable difficultyRunnable = new Runnable() {
         @Override
         public void run() {
-                difficulty += 0.2;
-                moleInterval = (moleInterval - 80);
+            if (moleInterval > 300) {
+                try {
+                    difficulty.postValue(difficulty.getValue() + 1);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                moleInterval = (moleInterval - 50);
                 Log.d("GameModel", "increaseDifficulty" + difficulty);
+            }
                 difficultyHandler.postDelayed(this, difficultyInterval);
             }
         };
@@ -104,6 +111,9 @@ public class GameModel extends ViewModel {
     public LiveData<Integer> getScore() {
             return score;
 }
+
+public LiveData<Integer> getDifficulty() { return difficulty; }
+
 
     /**
      * Gets the gameOver LiveData.

@@ -3,6 +3,7 @@ package com.example.whackamole;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.util.Log;
 
 /**
  * This class handles manages the sounds for the game.
@@ -10,8 +11,14 @@ import android.media.SoundPool;
 public class SoundManager {
     private SoundPool soundPool;
     private int activateSoundId;
-    private int deactivateSoundId;
+    private int tapMoleSoundId;
+    private int missedMoleSoundId;
     private Context context;
+
+    // Use flags to track if sounds are loaded
+    private boolean isActivateSoundLoaded = false;
+    private boolean isTapMoleSoundLoaded = false;
+    private boolean isMissedMoleSoundLoaded = false;
 
     /**
      * Constructor for SoundManager.
@@ -25,7 +32,7 @@ public class SoundManager {
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
         soundPool = new SoundPool.Builder()
-                .setMaxStreams(2)
+                .setMaxStreams(3)
                 .setAudioAttributes(audioAttributes)
                 .build();
 
@@ -33,8 +40,23 @@ public class SoundManager {
     }
 
     private void loadSounds() {
-        activateSoundId = soundPool.load(context, R.raw.activate, 1);
-        deactivateSoundId = soundPool.load(context, R.raw.deactivate, 1);
+        if (soundPool == null || context == null) {
+            Log.e("SoundManager", "Cannot load sounds, SoundPool or Context is null.");
+            return;
+        }
+
+        try {
+            // Log right before the call that crashes
+            Log.d("SoundManager", "Attempting to load R.raw.activate");
+            activateSoundId = soundPool.load(context, R.raw.activate, 1);
+           Log.d("SoundManager", "Attempting to load R.raw.tapmole");
+            tapMoleSoundId = soundPool.load(context, R.raw.tapmole, 1);
+            Log.d("SoundManager", "Finished initiating sound loading.");
+            missedMoleSoundId = soundPool.load(context, R.raw.missedmole, 1);
+        } catch (Exception e) {
+            // Catch any exception to see what it is
+            Log.e("SoundManager", "Exception during soundPool.load()", e);
+        }
     }
 
     /**
@@ -42,16 +64,25 @@ public class SoundManager {
      */
     public void playActivateSound() {
         if (activateSoundId != 0) {
-            soundPool.play(activateSoundId, 1.0f, 1.0f, 0, 0, 1.0f);
+            soundPool.play(activateSoundId, 1.0f, 1.0f, 0, 0, 1.5f);
         }
     }
 
     /**
      * Plays the mole deactivate sound.
      */
-    public void playDeactivateSound() {
-        if (deactivateSoundId != 0) {
-            soundPool.play(deactivateSoundId, 1.0f, 1.0f, 0, 0, 1.0f);
+    public void playTapMoleSound() {
+        if (tapMoleSoundId != 0) {
+            soundPool.play(tapMoleSoundId, 1.0f, 1.0f, 0, 0, 1.5f);
+        }
+    }
+
+    /**
+     * Plays the mole missed sound.
+     */
+    public void playMissedMoleSound() {
+        if (tapMoleSoundId != 0) {
+            soundPool.play(missedMoleSoundId, 1.0f, 1.0f, 0, 0, 1.25f);
         }
     }
 
