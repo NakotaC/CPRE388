@@ -207,7 +207,8 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
-     * OnClick handler for all of the mole buttons.
+     * OnClick handler for all of the mole buttons. Determines which mole was clicked
+     * and updates the game state accordingly.
      * @param view The view that was clicked.
      */
     public void onMoleClicked(View view) {

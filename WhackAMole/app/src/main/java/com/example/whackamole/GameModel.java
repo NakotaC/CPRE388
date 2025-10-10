@@ -112,7 +112,11 @@ public class GameModel extends ViewModel {
             return score;
 }
 
-public LiveData<Integer> getDifficulty() { return difficulty; }
+    /**
+     * Gets the difficulty LiveData.
+     * @return A LiveData that represents the difficulty.
+     */
+    public LiveData<Integer> getDifficulty() { return difficulty; }
 
 
     /**

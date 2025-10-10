@@ -21,7 +21,7 @@ public class SoundManager {
     private boolean isMissedMoleSoundLoaded = false;
 
     /**
-     * Constructor for SoundManager.
+     * Constructor for SoundManager. Initializes the SoundPool and loads sounds.
      * @param context The application context.
      */
     public SoundManager(Context context) {
@@ -60,7 +60,7 @@ public class SoundManager {
     }
 
     /**
-     * Plays the mole activate sound.
+     * Plays the sound for a mole appearing
      */
     public void playActivateSound() {
         if (activateSoundId != 0) {
@@ -69,7 +69,7 @@ public class SoundManager {
     }
 
     /**
-     * Plays the mole deactivate sound.
+     * Plays the sound of a mole being tapped
      */
     public void playTapMoleSound() {
         if (tapMoleSoundId != 0) {
@@ -78,10 +78,10 @@ public class SoundManager {
     }
 
     /**
-     * Plays the mole missed sound.
+     * Plays the sound of a missed mole
      */
     public void playMissedMoleSound() {
-        if (tapMoleSoundId != 0) {
+        if (missedMoleSoundId != 0) {
             soundPool.play(missedMoleSoundId, 1.0f, 1.0f, 0, 0, 1.25f);
         }
     }
