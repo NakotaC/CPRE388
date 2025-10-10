@@ -200,8 +200,8 @@ public class GameActivity extends AppCompatActivity {
                 mole9.setVisibility(View.VISIBLE);
                 break;
         }
-        int moleTimer = Math.max(350, 900 - (50 * gameModel.getDifficulty().getValue()));
-        gameModel.getMoleModel()[index].startExpirationTimer((900 / gameModel.getDifficulty().getValue()));
+        int moleTimer = Math.max(600, 950 - (25 * gameModel.getDifficulty().getValue()));
+        gameModel.getMoleModel()[index].startExpirationTimer(moleTimer);
         soundManager.playActivateSound();
     }
 
