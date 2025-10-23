@@ -1,12 +1,9 @@
 /**
  * Copyright 2017 Google Inc. All Rights Reserved.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +12,6 @@
  */
 
 package com.google.firebase.example.fireeats;
-
-import static com.google.common.collect.Iterators.limit;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.example.fireeats.adapter.RestaurantAdapter;
 import com.google.firebase.example.fireeats.model.Restaurant;
 import com.google.firebase.example.fireeats.util.FirebaseUtil;
@@ -111,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements
 
         // Initialize Firestore and the main RecyclerView
         mFirestore = FirebaseUtil.getFirestore();
+        mQuery = mFirestore.collection("restaurants")
+                .orderBy("avgRating",Query.Direction.DESCENDING)
+                .limit(LIMIT);
         initRecyclerView();
 
         // Filter Dialog
@@ -175,21 +172,35 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
     private void onAddItemsClicked() {
-        // TODO(developer): Add random restaurants
-        showTodoToast();
+        CollectionReference restaurants = mFirestore.collection("restaurants");
+        for (int i = 0; i < 10; i++) {
+            restaurants.add(RestaurantUtil.getRandom(this));
+        }
     }
 
 
     @Override
     public void onFilter(Filters filters) {
-        // TODO(developer): Construct new query
-        showTodoToast();
-
-        // Set header
+        Query query = mFirestore.collection("restaurants"); //hint: CollectionReference extends Query
+        if (filters.getCategory() != null) {
+            query = query.whereEqualTo(Restaurant.FIELD_CATEGORY, filters.getCategory());
+        }
+        if (filters.getCity() != null) {
+            query = query.whereEqualTo(Restaurant.FIELD_CITY, filters.getCity());
+        }
+        if (filters.getPrice() != -1) {
+            query = query.whereEqualTo(Restaurant.FIELD_PRICE, filters.getPrice());
+        }
+        query = query.orderBy(filters.getSortBy(), filters.getSortDirection());
+// Limit items
+                query = query.limit(LIMIT);
+// Update the query
+        mQuery = query;
+        mAdapter.setQuery(query);
+// Set header
         mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
         mCurrentSortByView.setText(filters.getOrderDescription(this));
-
-        // Save filters
+// Save filters
         mViewModel.setFilters(filters);
     }
 
@@ -208,8 +219,14 @@ public class MainActivity extends AppCompatActivity implements
                 onAddItemsClicked();
                 break;
             case R.id.menu_sign_out:
-                FirebaseUtil.getAuthUI().signOut(this);
-                startSignIn();
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Sign out successful");
+                                startSignIn();
+                            }
+                        });
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -221,8 +238,16 @@ public class MainActivity extends AppCompatActivity implements
         if (requestCode == RC_SIGN_IN) {
             mViewModel.setIsSigningIn(false);
 
-            if (resultCode != RESULT_OK && shouldStartSignIn()) {
-                startSignIn();
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                Log.d(TAG, "Sign in successful");
+                // The user is now authenticated, onStart() will handle showing content
+            } else {
+                // Sign in failed or was cancelled
+                Log.w(TAG, "Sign in failed or cancelled");
+                if (shouldStartSignIn()) {
+                    startSignIn();
+                }
             }
         }
     }
