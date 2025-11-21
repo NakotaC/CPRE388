@@ -2,6 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
+Properties localProperties = new Properties()
+File localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
 
 android {
     namespace 'com.example.chatbot'

@@ -1,7 +1,9 @@
 package com.example.chatbot;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,8 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -71,9 +82,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadMessages() {
         String stringPrefs = prefs.getString(KEY_MESSAGES, null);
+        if (stringPrefs == null) {
+            return;
+        }
         messages.clear();
-        messages.addAll(Objects.requireNonNull(gson.fromJson(stringPrefs, new TypeToken<List<Message>>() {
-        }.getType())));
+        messages.addAll(Objects.requireNonNull(gson.fromJson(stringPrefs, new TypeToken<List<Message>>() {}.getType())));
         adapter.notifyDataSetChanged();
         if (!messages.isEmpty()) {
             recyclerView.scrollToPosition(messages.size() - 1);
@@ -101,11 +114,22 @@ public class MainActivity extends AppCompatActivity {
      * 8. Call sendMessageToGemini() with the text
      */
     private void sendMessage() {
+        String text = inputEditText.getText().toString().trim();
+        if (text.isEmpty()) {
+            return;
+        }
+
+        Message message = new Message(text, true);
+        messages.add(message);
+        adapter.notifyItemInserted(messages.size() - 1);
+        recyclerView.scrollToPosition(messages.size() - 1);
+        inputEditText.setText("");
+        saveMessages();
+        sendMessageToGemini(text);
 
     }
 
     /**
-     * TODO: Send message to Gemini API on background thread
      * 1. Get API key from BuildConfig.GEMINI_API_KEY
      * 2. Create a new Thread and start it
      * 3. Inside the thread:
@@ -118,11 +142,24 @@ public class MainActivity extends AppCompatActivity {
      *    - Wrap everything in try-catch and call displayAiMessage() with error on exception
      */
     private void sendMessageToGemini(String userText) {
+        String apiKey = BuildConfig.GEMINI_API_KEY;
+        Thread thread = new Thread(() -> {
+            try {
+                String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey;
+                String escapedText = userText.replace("\"", "\\\"").replace("\n", "\\n");
+                String jsonBody = "{\"contents\":[{\"parts\":[{\"text\":\"" + escapedText + "\"}]}]}";
+                String response = doJsonPost(endpoint, jsonBody);
+                String aiMessage = parseGeminiResponse(response);
+                displayAiMessage(aiMessage);
 
+            } catch (Exception e) {
+                displayAiMessage("⚠️ Something went wrong.");
+            }
+        });
+        thread.start();
     }
 
     /**
-     * TODO: Make HTTP POST request
      * 1. Create URL object from endpoint string
      * 2. Open HttpURLConnection
      * 3. Set request method to "POST"
@@ -140,8 +177,47 @@ public class MainActivity extends AppCompatActivity {
      * 11. Return the response string
      */
     private String doJsonPost(String endpoint, String jsonBody) throws Exception {
+        StringBuilder response;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(endpoint);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setRequestProperty("Content-Length", String.valueOf(jsonBody.getBytes(StandardCharsets.UTF_8).length));
 
-        return "";
+            connection.setDoOutput(true);
+
+            // Write the body using a try-with-resources block to auto-close the stream
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = connection.getResponseCode();
+            InputStream inputStream = (responseCode >= 200 && responseCode <= 299)
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
+
+            // Read the response using a try-with-resources block
+            response = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                String responseLine;
+                while ((responseLine = reader.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                Log.d("GEMINI_API", "Response Code: " + responseCode);
+                Log.d("GEMINI_API", "Response: " + response.toString());
+            }
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+
+            }
+        }
+
+        return response.toString();
     }
 
     /**
@@ -159,8 +235,23 @@ public class MainActivity extends AppCompatActivity {
      * 9. Return the text or an error message
      */
     private String parseGeminiResponse(String json) {
-
-        return "⚠️ Could not parse AI response.";
+        try {
+            JsonObject object = new Gson().fromJson(json, JsonObject.class);
+            if (object.has("error")) {
+                String errorMessage = object.getAsJsonObject("error").get("message").getAsString();
+                return "⚠️ API Error: " + errorMessage;
+            }
+            JsonArray candidates = object.getAsJsonArray("candidates");
+            JsonObject candidate = candidates.get(0).getAsJsonObject();
+            JsonObject content = candidate.getAsJsonObject("content");
+            JsonArray parts = content.getAsJsonArray("parts");
+            JsonObject part = parts.get(0).getAsJsonObject();
+            String text = part.get("text").getAsString();
+            return part.get("text").getAsString();
+        } catch (Exception e) {
+            e.printStackTrace(); // Print the parsing error to the log for debugging
+            return "⚠️ Could not parse AI response.";
+        }
     }
 
     /**
