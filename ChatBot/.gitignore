@@ -1,15 +1,35 @@
+# =========================================
+# Android Studio / IntelliJ
+# =========================================
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+.idea/
+.project
+.classpath
+.settings/
+*/build/
+# =========================================
+# Gradle
+# =========================================
+.gradle/
+build/
 local.properties
+/local.properties
+
+# =========================================
+# Android Studio Generated Files
+# =========================================
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.apks
+*.jar
+*.war
+*.ear
+
+# =iac
+# Other
+# =========================================
+.DS_Store
